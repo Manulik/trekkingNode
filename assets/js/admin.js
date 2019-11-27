@@ -53,9 +53,18 @@ document.querySelector('.products-container').addEventListener('click', (e) => {
 });
 
 
-
+function clearFrom(inputs, data) {
+    for (input of inputs) {
+        input.value = '';
+    }
+    for (let prop in data) {
+        data[prop] = "";
+    }
+}
 
 function handleForm() {
+
+    const inputs = document.querySelectorAll('form.add-product input[name]');
 
     const data = {
         id: '',
@@ -69,16 +78,21 @@ function handleForm() {
     }
 
     document.getElementById('add-product').addEventListener('click', (e) => {
-        e.preventDefault();
-        data.id = Date.now();
-        console.log(data.id);
-        products.push(data);
-        localStorage.setItem('products', JSON.stringify(products));
-        showProducts(products);
+        if (data.name.length >= 3 && data.price) {
+            e.preventDefault();
+            data.id = Date.now() + products.length;
+            console.log(data.id);
+            products.push(data);
+            localStorage.setItem('products', JSON.stringify(products));
+            showProducts(products);
+            clearFrom(inputs, data);
+        } else {
+            alert('incorect from');
+        }
 
     });
 
-    const inputs = document.querySelectorAll('form.add-product input[name]');
+
 
     for (input of inputs) {
         input.addEventListener('input', (e) => {
